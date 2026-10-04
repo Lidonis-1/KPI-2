@@ -31,7 +31,7 @@ Chat:
 
 - chat_id | int | PK
 - stream_id | int | FK
-- message_list | text (або array)
+- message_list | array
 
 Message:
 
