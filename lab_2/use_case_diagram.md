@@ -14,6 +14,9 @@ payment_system(["👤 платіжна система"])
     %% Загальні прецеденти для користувача
     user --> reg("реєстрація")
     user --> prof("керування профілем")
+    user -->  avt("автентифікація")
+    avt -.->|include| reg
+    prof -.->|include| avt
 
     %% Взаємодія глядача зі стрімом
     viewer --> interact("взаємодія зі стрімом")
@@ -46,4 +49,4 @@ payment_system(["👤 платіжна система"])
 
 ## рендер відповідної діаграми виконаний в draw.io
 
-![alt text](image.png)
+![alt text](use_case_diagram.png)
