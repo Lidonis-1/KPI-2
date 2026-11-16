@@ -27,7 +27,7 @@ auditstatus = err: (9-10)
 9. return(audit_status): повернення статусу перевірки
 10. postErrType(Err) відобарженя помилки із збереженим текстом та часом що залишилось почекати
 
-auditstatus = ok:(9-12)
+auditstatus = ok:(11-15)
 
 11. saveMessChat(m_id, chat_id, stream_id): збереження подомлення в таблиці chat на каналі
 12. saveMess(m_id, chat_id, us_id, text, time): збереження повідомлення в таблиці message
@@ -51,8 +51,8 @@ auditstatus = ok:(9-12)
 
 loop(1-2)
 
-1. selectMessage(m2_id)
-2. changeMessType(m2_id)
+1. selectMessage(m2_id) вибір повідомлення адресата
+2. changeMessType(m2_id) зміна типу власного повідомлення з додаванням нового атрибуту - id повідомлення на яке відповідають
 3. enterText(text): написання повідомлення
 4. sendReq(): натискання кнопки надіслати
 5. postMes(status, text, us_id, stream_id, chat_id, m2_id): запит на сервіс для обробки запиту надсилання повідомлення
@@ -63,12 +63,12 @@ loop(1-2)
 10. audit(status, text, us_id, lastTime, type_m2): перевірка на відповідність всім вимогам для надсилання повідомлення
 
 ALT
-auditstatus = err: (9-10)
+auditstatus = err: (11-12)
 
 11. return(audit_status): повернення статусу перевірки
 12. postErrType(Err) відобарженя помилки із збереженим текстом та часом що залишилось почекати
 
-auditstatus = ok:(9-12)
+auditstatus = ok:(13-17)
 
 13. saveMessChat(m_id, chat_id, stream_id): збереження подомлення в таблиці chat на каналі
 14. saveMess(m_id, chat_id, us_id, text, time, m2_id): збереження повідомлення в таблиці message
@@ -87,15 +87,20 @@ UC-3: видалення повідомлення користувачем з в
 - chatService
 - message
 - chat
--
 
 кроки:
 
-1. виділення повідомлення
-2. відобразити можливі дії
-3. вибрати "delete"
-4. перевірити статус повідомлення
-5. повернення статусу перевірки
-6. відправити запит на видалення з id повідомлення
-7. оновлення історії
-8. відображення історії
+loop: (1-3)
+
+1. selectMessage(m2_id, us_status): виділення повідомлення
+2. checkOrder(us_status): перевірка дозволів на взаємодії з повідомленнями
+3. showAction() відобразити можливі дії
+4. delete(us_id) вибрати дію видалення
+5. deleteReq(m2_id, us_id) запит на видалення конкретного повідомлення
+6. deleteMessMessage(m2_id). видалення повідомлення із таблиці Message
+7. deleteMessChat(m2_id) видалення повідомлення із таблиці Chat
+8. return (message_list) повернення списку повідомлень в чаті
+9. chatUpdate(message_dict) оновлення історії з всіма атрибутами
+10. displayingNewChat() відображення оновленого чату
+
+![alt text](UC-3.png)
