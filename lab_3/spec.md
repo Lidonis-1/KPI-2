@@ -6,26 +6,34 @@
 
 - user
 - charUI
-- chatServis
+- chatService
+- message
+- chat
 
 Кроки:
 
-1. enterText(): ввденення тексту повідомлення
-2. sendReq(): запит на відправку повідомлення з його параметрами
-3. auditMes(): перевірка повідомленням на вимоги
+1. enterText(text): написання повідомлення
+2. sendReq(): натискання кнопки надіслати
+3. postMes(status, text, us_id, stream_id, chat_id): запит на сервіс для обробки запиту надсилання повідомлення
+4. checkLastMess(us_id): запит на отримання id останнього повідомлення користувача
+5. return (lastMessId): повернення id останнього повідомлення користувача сервісу
+6. takeLastMessParam(us_id, lastMessId) запит на отримання часу коли останнє повідомлення було записано
+7. return(lastTime) отримання цього часу сервісом
+8. audit(status, text, us_id, lastTime) перевірка на відповідність всім вимогам для надсилання повідомлення
 
 ALT
-status ok:(4-5)
+auditstatus = err: (9-10)
 
-4. returnAdtStatus(): повернення статусу перевірки
-5. postErrType() відобарженя помилки із збереженим текстом та часом що залишилось почекати
+9. return(audit_status): повернення статусу перевірки
+10. postErrType(Err) відобарженя помилки із збереженим текстом та часом що залишилось почекати
 
-status err:(6-9)
+auditstatus = ok:(9-12)
 
-6. returnAdtStatus(): повернення статусу перевірки
-7. saveMessReq(): збереження повідомлення в чаті
-8. historyUpdate(): оновлення історії
-9. chatUpdate(): відображення оновленого чату
+11. saveMessChat(m_id, chat_id, stream_id): збереження подомлення в таблиці chat на каналі
+12. saveMess(m_id, chat_id, us_id, text, time): збереження повідомлення в таблиці message
+13. return(message_list): отримання оновленої історії
+14. chatUpdate(message_dict): оновлення історії з всіма атрибутами
+15. displayingNewChat(): відображення оновленого чату
 
 ![alt text](UC-1.png)
 
@@ -41,24 +49,28 @@ status err:(6-9)
 
 loop(1-2)
 
-1. selectMess(): позначення повідомлення адресата
-2. changeMessType(): зміна типу повідомлення з вказаним параметром "адресата"
-3. enterText(): введення тексту
-4. sendReq(): запит на відправку повідомлення з його параметрами
-5. auditMes(): перевірка повідомленням на вимоги
+1. enterText(text): позначення повідомлення адресата
+2. sendReq(): зміна типу повідомлення з вказаним параметром "адресата"
+3. postMes(status, text, us_id, stream_id, chat_id): введення тексту
+4. checkLastMess(us_id): запит на відправку повідомлення з його параметрами
+5. return (lastMessId): перевірка повідомленням на вимоги
+6. takeLastMessParam(us_id, lastMessId)
+7. return(lastTime)
+8. audit(status, text, us_id, lastTime)
 
 ALT
-status ok: (7-8)
+status = err: (9-10)
 
-7. returnAdtStatus(): повернення статусу перевірки
-8. postErrType() відобарженя помилки із збереженим текстом та часом що залишилось почекати
+9. return(audit_status): повернення статусу перевірки
+10. postErrType(Err) відобарженя помилки із збереженим текстом та часом що залишилось почекати
 
-status err:(9-12)
+auditstatus = ok:(9-12)
 
-9. returnAdtStatus(): повернення статусу перевірки
-10. saveMessReq(): збереження повідомлення в чаті
-11. historyUpdate(): оновлення історії
-12. chatUpdate(): відображення оновленого чату
+11. saveMessChat(m_id, chat_id, stream_id): повернення статусу перевірки
+12. saveMess(m_id, chat_id, us_id, text, time): збереження повідомлення в чаті
+13. return(message_list): оновлення історії
+14. chat update(message_dict): відображення оновленого чату
+15. displaying new chat()
 
 UC-3: видалення повідомлення користувачем з відповідним правом на трансляції (streamer, vip)
 
